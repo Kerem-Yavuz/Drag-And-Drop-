@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>
+                
+                <div id="wrap1">
+                    <div id="block1"></div>
+                        <div class="text">
+                        <input type="text" placeholder="ali"></input>
+                    </div>
+                </div>
+             
+            </td>
+            <td>
+                <div id="wrap2">
+                    <div id="block2"></div>
+                        <div class="text">
+                        <input type="text" placeholder="mehmet"></input>
+                    </div>
+              </div>
+            </td>
+            <td>
+                <div id="wrap3">
+                
+                    <div id="block3"></div>
+                        <div class="text">
+                        <input type="text" placeholder="ahmet"></input>
+                    </div>
+              </div>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+        function getElementWidth() {
+            const block1 = document.getElementById('block1');
+            const width = block1.offsetWidth;
+            console.log(`The width of #block1 is ${width} pixels.`);
+        }
+        setInterval(getElementWidth, 1000);
+
+
+        function logBlockWidth1() {
+            const block1 = document.getElementById('block1');
+            const computedStyle = getComputedStyle(block1);
+            const blockWidth1 = computedStyle.getPropertyValue('--block-width1');
+            console.log(`--block-width1: ${blockWidth1}`);
+        }
+    
+    
+        setInterval(logBlockWidth1, 1000);
+    </script>
+
+</body>
+
+
+</html>
