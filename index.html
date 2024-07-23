@@ -7,59 +7,45 @@
 </head>
 
 <body>
-    <table>
-        <tr>
-            <td>
+
+    <div class="float-container">
+        <div id="box1" class="float-child" ondrop="drop(event)" ondragover="dropAble(event)">
+            <input class="drag" type="text" placeholder="ali"  draggable="true" ondragstart="drag(event)" id="drag1">
+        </div>
                 
-                <div id="wrap1">
-                    <div id="block1"></div>
-                        <div class="text">
-                        <input type="text" placeholder="ali"></input>
-                    </div>
-                </div>
              
-            </td>
-            <td>
-                <div id="wrap2">
-                    <div id="block2"></div>
-                        <div class="text">
-                        <input type="text" placeholder="mehmet"></input>
-                    </div>
-              </div>
-            </td>
-            <td>
-                <div id="wrap3">
+            
                 
-                    <div id="block3"></div>
-                        <div class="text">
-                        <input type="text" placeholder="ahmet"></input>
-                    </div>
-              </div>
-            </td>
-        </tr>
-    </table>
+                    
+        <div id="box2"  class="float-child" ondrop="drop(event)" ondragover="dropAble(event)">
+            <input class="drag" type="text" placeholder="mehmet" draggable="true" ondragstart="drag(event)" id="drag2">
+        </div>
+              
+            
+               
+                
+                    
+        <div id="box3"  class="float-child" ondrop="drop(event)" ondragover="dropAble(event)">
+            <input class="drag" type="text" placeholder="ahmet" draggable="true" ondragstart="drag(event)" id="drag3">
+
+        </div>
+    </div>
 
     <script>
-        function getElementWidth() {
-            const block1 = document.getElementById('block1');
-            const width = block1.offsetWidth;
-            console.log(`The width of #block1 is ${width} pixels.`);
+        function dropAble(ev) {
+            ev.preventDefault();
         }
-        setInterval(getElementWidth, 1000);
-
-
-        function logBlockWidth1() {
-            const block1 = document.getElementById('block1');
-            const computedStyle = getComputedStyle(block1);
-            const blockWidth1 = computedStyle.getPropertyValue('--block-width1');
-            console.log(`--block-width1: ${blockWidth1}`);
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
         }
-    
-    
-        setInterval(logBlockWidth1, 1000);
+        function drop(ev) {
+            if(ev.target.classList.contains("drag")){
+                return 0;
+            }
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
     </script>
-
 </body>
-
-
 </html>

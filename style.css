@@ -1,135 +1,24 @@
-:root {
-    --width1:160px;
-    --width2:710px;
-    --width3: 1170px;
-
-    --block-width1:160px;
-    --block-width2:710px;
-    --block-width3:1170px;
-
-    --width1-Threshold:522px;
-    --width2-Threshold:1027px;
-
-    --is-width1-above-limit1: Min(1, Max(var(--block-width1) - var(--width1-Threshold), 0));
-    --is-width1-above-limit2: Min(1, Max(var(--block-width1) - var(--width2-Threshold), 0));
-    
-    --is-width2-above-limit1: Min(1, Max(var(--block-width2) - var(--width1-Threshold), 0));
-    --is-width2-above-limit2: Min(1, Max(var(--block-width2) - var(--width2-Threshold), 0));
-
-    --is-width3-above-limit1: Min(1, Max(var(--block-width3) - var(--width1-Threshold), 0));
-    --is-width3-above-limit2: Min(1, Max(var(--block-width3) - var(--width2-Threshold), 0));
-
-}
-
-
-
-
-td{
-    border: 1px solid black;
-    width: 600px;
-    height: 700px;
-    max-width: 500px;
-    max-height: 500px;
-    position: relative;
-}
-
-  
-  #wrap1 {
-    width: min-content;
-    position: absolute;
-    top:0px;
-    left: 0px;
-  }
-  #wrap2 {
-    width: min-content;
-    position: absolute;
-    top:0px;
-    left: -505px;
-  }
-  #wrap3 {
-    width: min-content;
-    position: absolute;
-    top:0px;
-    left: -1010px;
-  }
-  .text {
-    pointer-events: none;
-    position: absolute;
-    bottom: -10px;
-    left: calc(100% - 20px);
-    line-height: 0;
-    font-size: 10px;
-    z-index: 100;
-    cursor:move;
-  }
-
-
-
-#block3{
-    width:var(--width3);
-    --block-width3: width;
-    height: 20px;
-    background: rgb(0, 255, 72);
-    opacity: 0;
-    overflow: hidden;
-    resize: both;
-    z-index: 198;
-    padding: 0%;
-    margin: 0%;
-    position: relative;
-    
-}
-
-#block2{
-    width:var(--width2);
-    height: 20px;
-    background: rgb(186, 0, 0);
-    opacity: 0;
-    overflow: hidden;
-    resize: both;
-    z-index: 199;
-    padding: 0%;
-    margin: 0%;
-    position: relative;
-    
-}
-
-
-#block1 {
-    width:var(--width1);
-    height: 20px;
-    background: rgb(0, 225, 255);
-    
-    overflow: hidden;
-    resize: both;
-    z-index: 200;
-    padding: 0%;
-    margin: 0%;
-    position: relative;
-    container-type: inline-size;
-}
-
-
-#block1:active
+#box1,#box2,#box3
 {
-    --block-width1: var(width);
+  height: 600px;
+  width:300px;
 }
 
-#block2:active
+
+.float-container {
+  border: 3px solid #fff;
+  padding: 20px;
+}
+
+.float-child {
+  width: 50%;
+  float: left;
+  padding: 20px;
+  border: 2px solid rgb(0, 0, 0);
+}  
+
+.drag
 {
-  --block-width2: var(width);
+  margin-top: 20px;
+  border: 3px solid green;
 }
-
-#block3:active
-{
-  --block-width3: var(width);
-}
-
-
-
-@container (min-width: 600px) {
-      #block1 {
-        background-color: black;
-      }
-    }
-  
