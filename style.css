@@ -1,24 +1,73 @@
-#box1,#box2,#box3
+th
 {
-  height: 600px;
-  width:300px;
+  border: 3px solid black;
+  border-collapse: collapse;
+  width: 10%;
+  height: auto;
+  border-radius: 20px;
+  background-color: rgb(127, 153, 255);
+  vertical-align: text-top;
+}
+
+.table{
+  border: 3px solid black;
+  border-radius: 25px;
+  background-color: rgb(74, 101, 210);
+  height: 300px;
+}
+
+#box1
+{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+#box2
+{
+  border-radius: 0px;
+}
+
+#box3
+{
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 
 
-.float-container {
-  border: 3px solid #fff;
-  padding: 20px;
-}
 
-.float-child {
+[draggable] {
+  font-size: 20px;
+  padding-top: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 6px solid rgb(74, 101, 210);
+  background-color: rgb(200, 232, 255);
+  color: black;
+  
+  
+  border-radius: 10px;
+  cursor: move; /* Indicates the element is draggable */
   width: 50%;
-  float: left;
-  padding: 20px;
-  border: 2px solid rgb(0, 0, 0);
-}  
+  height: 60px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
 
-.drag
+[draggable]:active {
+  transform: scale(1.1); /* Optional visual effect when the element is being dragged */
+  opacity: 0.3;
+}
+
+.addButton
 {
+  font-size: 20px;
+  padding-top: 0px;
   margin-top: 20px;
-  border: 3px solid green;
+  border: 6px solid rgb(74, 101, 210);
+  background-color: rgb(200, 232, 255);
+  color: black;
+  border-radius: 5px;
+  cursor:pointer;
+  margin-left: 15%;
+  margin-right: 15%;
 }
