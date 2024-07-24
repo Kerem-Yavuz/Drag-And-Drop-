@@ -1,72 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
-
-    
-
-
     <table class="table">
-        <th id="box1"  ondrop="drop(event)" ondragover="dropAble(event)">
-            <input class="drag" type="text" placeholder="Ahmet" draggable="true" ondragstart="drag(event)" id="drag3">
-        </th>
-
-        <th id="box2"  ondrop="drop(event)" ondragover="dropAble(event)">
-            <input class="drag" type="text" placeholder="Mehmet" draggable="true" ondragstart="drag(event)" id="drag2">
-        </th>
-
-        <th  id="box3"  ondrop="drop(event)" ondragover="dropAble(event)">
-            <input class="drag" type="text" placeholder="Ali"  draggable="true" ondragstart="drag(event)" id="drag1">
-        </th>
+        <tr>
+            <td><p>Yazılım Mühendisliği</p></td>
+            <td><p>Bilgisayar Mühendisliği</p></td>
+            <td><p>Elektrik-Elektronik Mühendisliği</p></td>
+        </tr>
+        <th id="box1" ondrop="drop(event)" ondragover="dropAble(event)"></th>
+        <th id="box2" ondrop="drop(event)" ondragover="dropAble(event)"></th>
+        <th id="box3" ondrop="drop(event)" ondragover="dropAble(event)"></th>
     </table>
 
+    
     <input class="addButton" type="button" onclick="addElement('box1')" value="+">
 
     <script>
         function dropAble(ev) {
             ev.preventDefault();
         }
+
         function drag(ev) {
             ev.dataTransfer.setData("text", ev.target.id);
         }
+
         function drop(ev) {
+            let targetbox = ev.target;
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
             if(ev.target.classList.contains("drag")){
-                let parent;
-                parent = ev.target.parentNode;
-                parent.appendChild(document.getElementById(data));
+                targetbox = ev.target.parentNode;
             }
-            else{
-                ev.target.appendChild(document.getElementById(data));
+            targetbox.appendChild(document.getElementById(data));
+            console.log(targetbox.id);
+            console.log(data);
+            let bolumid;
+            switch (targetbox.id) {
+                case "box1":
+                    bolumid = 1;
+                    break;
+                case "box2":
+                    bolumid = 2;
+                    break;
+                case "box3":
+                    bolumid = 3;
+                    break;
+                default:
+                    bolumid = null;
+            }
+            if (bolumid !== null) {
+                postData(bolumid, data);
+            }
+        }
+
+        async function postData(bolumid, data) {
+            try {
+                const response = await fetch('/submit-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ bolumid: bolumid, data: data })
+                });
+                const result = await response.text();
+                console.log('Success:', result);
+            } catch (error) {
+                console.error('Error:', error);
             }
         }
 
         let nth = 4;
-        function addElement(box)
-        {   
+        function addElement(box) {   
             var newInput = document.createElement("input");
             newInput.setAttribute("type", "text");
             newInput.setAttribute("placeholder", nth);
             newInput.setAttribute("draggable", "true");
             newInput.setAttribute("ondragstart", "drag(event)");
-
-            // Set a unique id for the new input
-            var newId = "drag" + (nth);
-            newInput.setAttribute("id", newId);
-
-            // Add the "drag" class to the new input
+            newInput.setAttribute("id", "drag" + nth);
             newInput.classList.add("drag");
-
-            // Append the new input to the element with id="box1"
             document.getElementById(box).appendChild(newInput);
             nth++;
         }
+
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                const boxes = ["box1", "box2", "box3"];
+                data.forEach((person, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'drag';
+                    card.draggable = true;
+                    card.id = 'drag' + (index + 1);
+                    card.setAttribute("ondragstart", "drag(event)");
+                    card.innerHTML = `
+                        <p>
+                            <span>Ad:</span>
+                            <span>${person.name}</span>
+                        </p>
+                        <p>
+                            <span>Soyad:</span>
+                            <span>${person.surname}</span>
+                        </p>
+                        <p>
+                            <span>Email:</span>
+                            <span>${person.email}</span>
+                        </p>
+                    `;
+                    switch (person.bolumid) {
+                        case 1:
+                            document.getElementById("box1").appendChild(card);
+                            break;
+                        case 2:
+                            document.getElementById("box2").appendChild(card);
+                            break;
+                        case 3:
+                            document.getElementById("box3").appendChild(card);
+                            break;
+                    }
+                });
+            })
+            .catch(error => console.error('Error:', error));
+
+        
+
+        
     </script>
 </body>
 </html>

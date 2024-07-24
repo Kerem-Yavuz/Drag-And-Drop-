@@ -14,6 +14,7 @@ th
   border-radius: 25px;
   background-color: rgb(74, 101, 210);
   height: 300px;
+  margin: 0 auto;
 }
 
 #box1
@@ -36,8 +37,9 @@ th
 
 
 [draggable] {
-  font-size: 20px;
+  font-size: 15px;
   padding-top: 0px;
+  margin: 0 auto;
   margin-top: 10px;
   margin-bottom: 10px;
   border: 6px solid rgb(74, 101, 210);
@@ -46,16 +48,22 @@ th
   
   
   border-radius: 10px;
-  cursor: move; /* Indicates the element is draggable */
   width: 50%;
-  height: 60px;
-  text-align: center;
+  height: auto;
+  text-align: left;
+  padding-left: 25px;
   transition: transform 0.2s ease-in-out;
+}
+
+[draggable]:hover{
+
+  cursor: grab;
 }
 
 [draggable]:active {
   transform: scale(1.1); /* Optional visual effect when the element is being dragged */
   opacity: 0.3;
+  cursor: grabbing;
 }
 
 .addButton
@@ -71,3 +79,22 @@ th
   margin-left: 15%;
   margin-right: 15%;
 }
+
+[dragging]
+{
+  cursor: grabbing;
+}
+
+
+
+td{
+  margin: 0 auto;
+  height: 30px;
+  border: 3px solid rgb(0, 0, 0);
+  background-color: rgb(127, 153, 255);
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  font-size: larger;
+}
+

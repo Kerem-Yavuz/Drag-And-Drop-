@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Hakan",
+    "surname": "Gencoglu",
+    "bolumid": 1,
+    "email": "jane.smith@example.com",
+    "id": "drag1"
+  },
+  {
+    "name": "Ahmet",
+    "surname": "Kaplan",
+    "bolumid": 3,
+    "email": "jane.smith@example.com",
+    "id": "drag2"
+  },
+  {
+    "name": "Sengul",
+    "surname": "Bayrak Hayta",
+    "bolumid": 2,
+    "email": "jane.smith@example.com",
+    "id": "drag3"
+  },
+  {
+    "name": "Abdullah",
+    "surname": "Sonmez",
+    "bolumid": 1,
+    "email": "jane.smith@example.com",
+    "id": "drag4"
+  },
+  {
+    "name": "Kerem",
+    "surname": "Yavuz",
+    "bolumid": 1,
+    "email": "030722045@std.izu.edu.tr",
+    "id": "drag5"
+  }
+]
