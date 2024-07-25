@@ -2,6 +2,7 @@ var express = require('express');
 let fs = require('fs');
 var path = require('path');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 var uygulama = express();
 uygulama.use(express.static(path.join(__dirname, 'public')));
@@ -93,6 +94,46 @@ uygulama.post('/submit-data', (req, res) => {
 
 
 
-let server = uygulama.listen(3000, () => {
-    console.log("Server is running on port 3000");
+uygulama.use(express.static('public'));
+uygulama.use(bodyParser.urlencoded({ extended: true }));
+
+uygulama.post('/addCard', (req, res) => {
+    const newEntry = {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        bolumid:  parseInt(req.body.bolumid, 10)
+    };
+
+    fs.readFile('kisiler.json', (err, data) => {
+        if (err) throw err;
+
+        let json;
+        try {
+            json = JSON.parse(data);
+        } catch (e) {
+            console.error("Error parsing JSON data:", e);
+            return res.status(500).send("Error parsing data.json");
+        }
+
+        let number = json.length + 1; // Correct spelling of 'length'
+        
+        const newId = 'drag' + number; // Generate id based on the current length of the array
+        newEntry.id = newId;
+        json.push(newEntry);
+
+        fs.writeFile('kisiler.json', JSON.stringify(json, null, 2), (err) => {
+            if (err) throw err;
+            console.log('New entry added');
+        });
+    });
+
+    res.redirect('/');
+});
+
+
+let port = 8000;
+
+let server = uygulama.listen(port,'127.0.0.1', () => {
+    console.log("Server is running on:", port);
 });
