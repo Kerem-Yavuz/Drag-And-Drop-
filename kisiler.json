@@ -9,36 +9,36 @@
   {
     "name": "Ahmet",
     "surname": "Kaplan",
-    "bolumid": 2,
+    "bolumid": 1,
     "email": "ahmet.kaplan@izu.edu.tr",
     "id": "drag2"
   },
   {
     "name": "Sengul",
     "surname": "Bayrak Hayta",
-    "bolumid": 3,
+    "bolumid": 1,
     "email": "sengul.bayrak@izu.edu.tr",
     "id": "drag3"
   },
   {
     "name": "Kerem",
     "surname": "Yavuz",
-    "bolumid": 1,
     "email": "030722045@std.izu.edu.tr",
+    "bolumid": 1,
     "id": "drag4"
   },
   {
     "name": "Jon",
     "surname": "Doe",
     "email": "test@example.us",
-    "bolumid": 2,
+    "bolumid": 1,
     "id": "drag5"
   },
   {
     "name": "João",
     "surname": "Souza Silva",
     "email": "teste@exemplo.us",
-    "bolumid": 3,
+    "bolumid": 1,
     "id": "drag6"
   }
 ]

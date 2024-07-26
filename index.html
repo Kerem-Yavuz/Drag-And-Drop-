@@ -8,9 +8,9 @@
 <body>
     <table class="table">
         <tr>
-            <td id="header1"><p>Yazılım Mühendisliği</p></td>
-            <td id="header2"><p>Bilgisayar Mühendisliği</p></td>
-            <td id="header3"><p>Elektrik-Elektronik Mühendisliği</p></td>
+            <td id="header1"><p>Kişiler</p></td>
+            <td id="header2"><p>Detayları Görmek için Sürükle↓</p></td>
+            <td id="header3"><p>Detaylar</p></td>
         </tr>
         <th id="box1" ondrop="drop(event)" ondragover="dropAble(event)"></th>
         <th id="box2" ondrop="drop(event)" ondragover="dropAble(event)"></th>
@@ -36,10 +36,40 @@
         <input type="submit" value="+" class="addButton" >
     </form>
 
+
+    <div  id="delete" ondrop="deleteItem(event)" ondragover="dropAble(event)" class="deleteitem"></div>
+
     
     
 
     <script>
+        checkFilled();
+        function deleteItem(ev)
+        {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            deleteSend(data);
+        }
+
+        async function deleteSend( data) {
+            try {
+                const response = await fetch('/delete-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data: data })
+                });
+                const result = await response.text();
+                console.log('Success:', result);
+                location.reload();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+
+
         function dropAble(ev) {
             ev.preventDefault();
         }
@@ -48,33 +78,66 @@
             ev.dataTransfer.setData("text", ev.target.id);
         }
 
-        function drop(ev) {
+        async function drop(ev) {
             let targetbox = ev.target;
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
-            if(targetbox.id == "box1" || targetbox.id == "box2" || targetbox.id =="box3")
+            let box2 = document.getElementById("box2");
+            if(targetbox.id == "delete")
+            {
+                console.log("dropped");
+                deleteData(data);
+                if(!box2.hasChildNodes())
+                {
+                    changeFilled();
+                }
+            }
+            else if(targetbox.id == "box1")
             {
                 targetbox.appendChild(document.getElementById(data));
-                let bolumid;
-                switch (targetbox.id) {
-                    case "box1":
-                        bolumid = 1;
-                        break;
-                    case "box2":
-                        bolumid = 2;
-                        break;
-                    case "box3":
-                        bolumid = 3;
-                        break;
-                    default:
-                        bolumid = null;
+                postData(1, data);
+                if(!box2.hasChildNodes())
+                {
+                    changeFilled();
                 }
-
-                if (bolumid !== null) {
-                    postData(bolumid, data);
-            }
             }
             
+            else if(targetbox.id === "box2" && filledOut)
+            {
+                targetbox.appendChild(document.getElementById(data));
+                postData(2, data);
+                changeFilled();
+                console.log("moved to box2");
+            }
+            
+            
+            
+        }
+
+        let filledOut = true;
+        function checkFilled() {
+            fetch('/check-filled')
+                .then(response => response.json())
+                .then(data => {
+                    const filled = data.filled;
+                    console.log(filled); // true or false
+                    filledOut = !filled;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function changeFilled() {
+            fetch('/change-filled')
+                .then(response => response.text())
+                .then(message => {
+                    console.log(message); // Log the server response
+                    checkFilled();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
 
         async function postData(bolumid, data) {
@@ -96,7 +159,7 @@
         fetch('/data')
             .then(response => response.json())
             .then(data => {
-                const boxes = ["box1", "box2", "box3"];
+                const boxes = ["box1", "box2"];
                 data.forEach((person, index) => {
                     const card = document.createElement('div');
                     card.className = 'drag';
@@ -124,15 +187,12 @@
                         case 2:
                             document.getElementById("box2").appendChild(card);
                             break;
-                        case 3:
-                            document.getElementById("box3").appendChild(card);
-                            break;
                     }
                 });
             })
             .catch(error => console.error('Error:', error));
 
-        
+    
 
         
     </script>

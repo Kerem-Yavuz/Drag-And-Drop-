@@ -48,7 +48,7 @@ uygulama.get('/data', (req, res) => {
 
 uygulama.post('/change-data', (req, res) => {
     const { bolumid, data } = req.body;
-
+    
 
     fs.readFile("kisiler.json", 'utf8', (err, fileData) => {
       if (err) {
@@ -88,7 +88,6 @@ uygulama.post('/change-data', (req, res) => {
               console.error('Error writing file:', writeError);
               return res.status(500).send('Error writing file');
           }
-          res.send('Data updated successfully');
       });
   });
 
@@ -131,8 +130,100 @@ uygulama.post('/addCard', (req, res) => {
         });
     });
 
-    res.redirect('/');
+    res.redirect('/anasayfa');
 });
+
+
+uygulama.post('/delete-data', (req, res) => {
+    const { data } = req.body;
+    
+
+    fs.readFile("kisiler.json", 'utf8', (err, fileData) => {
+      if (err) {
+          console.error('Error reading file:', err);
+          return res.status(500).send('Error reading file');
+      }
+
+      let jsonData;
+      try {
+          jsonData = JSON.parse(fileData);
+      } catch (parseError) {
+          console.error('Error parsing JSON:', parseError);
+          return res.status(500).send('Error parsing JSON');
+      }
+
+      // Find and update the entry with the same id
+      let updated = false;
+      jsonData.forEach((item,index) => {
+          if (item.id === data) {
+              jsonData.splice(index,1);
+              updated = true;
+              return res.status(200).send("deleted");
+              
+          }
+          
+      });
+      
+      if (!updated) {
+          return res.status(404).send('Item with the specified id not found');
+      }
+
+      // Convert the data back to JSON
+      const updatedData = JSON.stringify(jsonData, null, 2); // Indent with 2 spaces
+      
+      // Write the updated JSON back to the file
+      fs.writeFile("kisiler.json", updatedData, 'utf8', (writeError) => {
+          if (writeError) {
+              console.error('Error writing file:', writeError);
+              return res.status(500).send('Error writing file');
+          }
+      });
+      
+  });
+
+});
+
+
+
+
+
+
+uygulama.get('/check-filled', (req, res) => {
+    const filePath = path.join(__dirname, 'detay.json');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).send('Error reading JSON file');
+        }
+        const jsonData = JSON.parse(data);
+        // Assuming you want to check the `filled` value of the first object in the array
+        const filled = jsonData.length > 0 ? jsonData[0].filled : false;
+        res.json({ filled });
+    });
+});
+
+uygulama.get('/change-filled', (req, res) => {
+    const filePath = path.join(__dirname, 'detay.json');
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).send('Error reading JSON file');
+        }
+        const jsonData = JSON.parse(data);
+        
+        // Toggle the filled value
+        jsonData[0].filled = !jsonData[0].filled;
+
+        // Write the updated data back to the file
+        fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), 'utf8', (err) => {
+            if (err) {
+                return res.status(500).send('Error writing JSON file');
+            }
+            res.send('Filled value updated');
+        });
+    });
+});
+
+
+
 
 
 let port = 8000;
