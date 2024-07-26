@@ -9,14 +9,14 @@
   {
     "name": "Ahmet",
     "surname": "Kaplan",
-    "bolumid": 3,
+    "bolumid": 2,
     "email": "ahmet.kaplan@izu.edu.tr",
     "id": "drag2"
   },
   {
     "name": "Sengul",
     "surname": "Bayrak Hayta",
-    "bolumid": 2,
+    "bolumid": 3,
     "email": "sengul.bayrak@izu.edu.tr",
     "id": "drag3"
   },
@@ -31,14 +31,14 @@
     "name": "Jon",
     "surname": "Doe",
     "email": "test@example.us",
-    "bolumid": 3,
+    "bolumid": 2,
     "id": "drag5"
   },
   {
     "name": "João",
     "surname": "Souza Silva",
     "email": "teste@exemplo.us",
-    "bolumid": 2,
+    "bolumid": 3,
     "id": "drag6"
   }
 ]

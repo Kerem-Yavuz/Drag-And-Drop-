@@ -17,7 +17,7 @@
         <th id="box3" ondrop="drop(event)" ondragover="dropAble(event)"></th>
     </table>
 
-    <form action="/addCard" method="POST">
+    <form action="/addCard" method="POST" class="addForm">
         <input type="text" class="textInput" name="name" placeholder="İsim" required>
         <br>
         <input type="text" class="textInput" name="surname" placeholder="Soyisim" required>
@@ -55,8 +55,6 @@
             if(targetbox.id == "box1" || targetbox.id == "box2" || targetbox.id =="box3")
             {
                 targetbox.appendChild(document.getElementById(data));
-                console.log(targetbox.id);
-                console.log(data);
                 let bolumid;
                 switch (targetbox.id) {
                     case "box1":
@@ -81,7 +79,7 @@
 
         async function postData(bolumid, data) {
             try {
-                const response = await fetch('/submit-data', {
+                const response = await fetch('/change-data', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

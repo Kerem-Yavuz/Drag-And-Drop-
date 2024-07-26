@@ -34,17 +34,20 @@ uygulama.get('/data', (req, res) => {
             res.status(500).send('Error reading the data file.');
             return;
         }
-        res.json(JSON.parse(data));
+        
+
+        try {
+            res.json(JSON.parse(data));
+        } catch (parseError) {
+            console.error('Error parsing JSON:', parseError);
+            return res.status(500).send('Error parsing JSON');
+        }
     });
 });
 
 
-uygulama.post('/submit-data', (req, res) => {
+uygulama.post('/change-data', (req, res) => {
     const { bolumid, data } = req.body;
-   
-
-    console.log('Received bolumid:', bolumid);
-    console.log('Received data:', data);
 
 
     fs.readFile("kisiler.json", 'utf8', (err, fileData) => {
@@ -67,7 +70,9 @@ uygulama.post('/submit-data', (req, res) => {
           if (item.id === data) {
               item.bolumid = bolumid;
               updated = true;
+              return res.status(200).send("changed data");
           }
+          
       });
 
       if (!updated) {
@@ -83,8 +88,6 @@ uygulama.post('/submit-data', (req, res) => {
               console.error('Error writing file:', writeError);
               return res.status(500).send('Error writing file');
           }
-
-          console.log('File updated successfully.');
           res.send('Data updated successfully');
       });
   });
@@ -133,7 +136,8 @@ uygulama.post('/addCard', (req, res) => {
 
 
 let port = 8000;
+let ip = "127.0.0.1";
 
-let server = uygulama.listen(port,'127.0.0.1', () => {
-    console.log("Server is running on:", port);
+let server = uygulama.listen(port,ip, () => {
+    console.log("Server is running on:",ip, port);
 });
