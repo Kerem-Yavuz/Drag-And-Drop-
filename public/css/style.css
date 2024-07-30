@@ -199,3 +199,47 @@ td{
   background-color: black;
 }
 
+
+
+
+.details {
+  background: rgb(74, 101, 210);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 50%;
+  height: auto;
+  margin: 0 auto;
+  padding: 25px;
+  text-align: center;
+  transition: transform 0.3s;
+  color:white;
+}
+
+.details:hover {
+  transform: translateY(-10px);
+}
+
+/* Başlık stili */
+.details h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+}
+
+.details h3::after {
+  content: '';
+  display: block;
+  width: 80%;
+  height: 2px;
+  background: #2c3e50;
+  margin: 10px auto;
+}
+
+/* Paragraf stili */
+.details p {
+  margin: 15px 0;
+  color: #ced6d6;
+  font-size: 16px;
+}

@@ -108,6 +108,7 @@
                 postData(2, data);
                 changeFilled();
                 console.log("moved to box2");
+                detailsFunction();
             }
             
             
@@ -122,6 +123,7 @@
                     const filled = data.filled;
                     console.log(filled); // true or false
                     filledOut = !filled;
+                    detailsFunction();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -192,8 +194,41 @@
             })
             .catch(error => console.error('Error:', error));
 
-    
+            
 
+
+        function detailsFunction () {
+            fetch('/detail-data')
+            .then(response => response.json())
+            .then(data => {
+                
+                data.forEach((person, index) => {
+                if(person.filled)
+                    {
+                    const card = document.createElement('div');
+                    card.className = "details";
+                    card.innerHTML = `
+                    <h3>  ${person.name} ${person.surname}</h3>
+                    <p>Bölüm: ${person.area}</p>
+                    <p>${person.email}</p>
+                    <p>Ofis: ${person.office}</p>
+                    <p>Tel: ${person.number}</p>
+                    `;
+
+                    const box = document.getElementById("box3");
+
+                    box.innerHTML = '';
+
+                    box.appendChild(card);
+                    } 
+                else if(!person.filled)
+                {
+                    document.getElementById("box3").innerHTML = '';
+                }      
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }
         
     </script>
 </body>

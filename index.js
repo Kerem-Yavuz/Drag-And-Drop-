@@ -45,6 +45,23 @@ uygulama.get('/data', (req, res) => {
     });
 });
 
+uygulama.get('/detail-data', (req, res) => {
+    fs.readFile('detay.json', 'utf8', (err, data) => {
+        if (err) {
+            res.status(500).send('Error reading the data file.');
+            return;
+        }
+        
+
+        try {
+            res.json(JSON.parse(data));
+        } catch (parseError) {
+            console.error('Error parsing JSON:', parseError);
+            return res.status(500).send('Error parsing JSON');
+        }
+    });
+});
+
 
 uygulama.post('/change-data', (req, res) => {
     const { bolumid, data } = req.body;
@@ -202,18 +219,20 @@ uygulama.get('/check-filled', (req, res) => {
 });
 
 uygulama.get('/change-filled', (req, res) => {
-    const filePath = path.join(__dirname, 'detay.json');
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
+    const detayPath = path.join(__dirname, 'detay.json');
+    
+    fs.readFile(detayPath, 'utf8', (err, detay) => {
+        if (err){
             return res.status(500).send('Error reading JSON file');
         }
-        const jsonData = JSON.parse(data);
+
+        const detayData = JSON.parse(detay);
         
         // Toggle the filled value
-        jsonData[0].filled = !jsonData[0].filled;
-
+        detayData[0].filled = !detayData[0].filled;
+        detailsdata();
         // Write the updated data back to the file
-        fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), 'utf8', (err) => {
+        fs.writeFile(detayPath, JSON.stringify(detayData, null, 2), 'utf8', (err) => {
             if (err) {
                 return res.status(500).send('Error writing JSON file');
             }
@@ -221,6 +240,77 @@ uygulama.get('/change-filled', (req, res) => {
         });
     });
 });
+
+
+function detailsdata()
+{
+    const cardPath = path.join(__dirname, 'kisiler.json');
+    const detailPath = path.join(__dirname,'detay.json');
+    let details;
+    fs.readFile(cardPath, 'utf8', (err, cardFile) => {
+        if (err) {
+            return res.status(500).send('Error reading JSON file');
+        }
+
+        let cardData;
+        try {
+            cardData = JSON.parse(cardFile);
+        } catch (e) {
+            console.error("Error parsing JSON data:", e);
+        }
+
+        cardData.forEach(item => {
+            if (item.bolumid === 2 ) {
+                details = {
+                    name: item.name,
+                    surname: item.surname,
+                    email: item.email,
+                    area: item.area,
+                    number: item.number,
+                    office: item.office,
+                };
+                
+                fs.readFile(detailPath, 'utf8', (err, detailFile) => {
+                    if (err) {
+                        console.error('Error reading file:', err);
+                    }
+              
+                    let jsonData;
+                    try {
+                        jsonData = JSON.parse(detailFile);
+                    } catch (parseError) {
+                        console.error('Error parsing JSON:', parseError);
+                    }
+              
+                    
+                    
+                    jsonData.forEach(item => {
+                            item.name = details.name;
+                            item.surname = details.surname;
+                            item.email = details.email;
+                            item.area = details.area;
+                            item.number = details.number;
+                            item.office = details.office
+                    });
+
+              
+                    // Convert the data back to JSON
+                    const updatedData = JSON.stringify(jsonData, null, 2); // Indent with 2 spaces
+              
+                    // Write the updated JSON back to the file
+                    fs.writeFile("detay.json", updatedData, 'utf8', (writeError) => {
+                        if (writeError) {
+                            console.error('Error writing file:', writeError);
+                        }
+                    });
+
+                });
+            }
+            
+        });
+    });
+    
+}
 
 
 
