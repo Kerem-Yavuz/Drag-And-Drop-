@@ -44,6 +44,7 @@
 
     <script>
         checkFilled();
+        detailsFunction();
         function deleteItem(ev)
         {
             ev.preventDefault();
@@ -144,7 +145,7 @@
 
         async function postData(bolumid, data) {
             try {
-                const response = await fetch('/change-data', {
+                const response = await fetch('/change-box', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -205,15 +206,28 @@
                 data.forEach((person, index) => {
                 if(person.filled)
                     {
-                    const card = document.createElement('div');
+                    const card = document.createElement('form');
                     card.className = "details";
+                    card.method= "POST";
+                    card.action="/change-data"; 
                     card.innerHTML = `
-                    <h3>  ${person.name} ${person.surname}</h3>
-                    <p>Bölüm: ${person.area}</p>
-                    <p>${person.email}</p>
-                    <p>Ofis: ${person.office}</p>
-                    <p>Tel: ${person.number}</p>
-                    `;
+                    <div><p>Ad:</p><input type="text" name="name" class="textInput" value=  ${person.name} required></div>
+                    <br>
+                    <div><p>Soyad:</p><input type="text" name="surname" class="textInput" value= ${person.surname} required></div>
+                    <br>
+                    <div><p>Numara:</p><input type="text" name="number" class="textInput" value= ${person.number} required></div>
+                    <br>
+                    <div><p>Ofis:</p><input type="text" name="office" class="textInput" value= ${person.office} required></div>
+                    <br>
+                    <div><p>Email:</p><input type="text" name="email" class="textInput" value= ${person.email} required></div>
+                    <br>
+                    <div><p>Bölüm:</p><input type="text" name="area" class="textInput" value= ${person.area} required></div>
+                    <input type="text" name="id" style="display: none;" value= ${person.id}>
+                    <input type="submit" value="Değiştir" class="changeButton">
+                    `
+                    
+                    
+                    ;
 
                     const box = document.getElementById("box3");
 

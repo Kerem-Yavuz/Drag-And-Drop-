@@ -11,7 +11,7 @@ uygulama.use(express.static(path.join(__dirname, 'public')));
 uygulama.use(express.json());
 uygulama.use(express.urlencoded({ extended: true }));
 
-uygulama.get('/AnaSayfa', (req, res) => {
+uygulama.get('/anasayfa', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -20,7 +20,7 @@ uygulama.get('/AnaSayfa', (req, res) => {
 
 
 uygulama.get('/', (req, res) => {
-    res.redirect('/AnaSayfa');
+    res.redirect('/anasayfa');
 });
 
 
@@ -63,7 +63,7 @@ uygulama.get('/detail-data', (req, res) => {
 });
 
 
-uygulama.post('/change-data', (req, res) => {
+uygulama.post('/change-box', (req, res) => {
     const { bolumid, data } = req.body;
     
 
@@ -257,6 +257,7 @@ function detailsdata()
             cardData = JSON.parse(cardFile);
         } catch (e) {
             console.error("Error parsing JSON data:", e);
+            return 0;
         }
 
         cardData.forEach(item => {
@@ -268,6 +269,7 @@ function detailsdata()
                     area: item.area,
                     number: item.number,
                     office: item.office,
+                    id: item.id,
                 };
                 
                 fs.readFile(detailPath, 'utf8', (err, detailFile) => {
@@ -290,7 +292,8 @@ function detailsdata()
                             item.email = details.email;
                             item.area = details.area;
                             item.number = details.number;
-                            item.office = details.office
+                            item.office = details.office;
+                            item.id = details.id;
                     });
 
               
@@ -315,9 +318,115 @@ function detailsdata()
 
 
 
+uygulama.post('/change-data', (req, res) => {
+    const entry = {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        id: req.body.id,
+        area: req.body.area,
+        number: req.body.number,
+        office: req.body.office
+    };
+
+    
+    
+    fs.readFile("kisiler.json", 'utf8', (err, fileData) => {
+      if (err) {
+          console.error('Error reading file:', err);
+          return res.status(500).send('Error reading file');
+      }
+
+      let jsonData;
+      try {
+          jsonData = JSON.parse(fileData);
+      } catch (parseError) {
+          console.error('Error parsing JSON:', parseError);
+          return res.status(500).send('Error parsing JSON');
+      }
+
+      // Find and update the entry with the same id
+      let updated = false;
+      jsonData.forEach(item => {
+          if (item.id === entry.id) {
+              item.name = entry.name;
+              item.surname = entry.surname;
+              item.area = entry.area;
+              item.office = entry.office;
+              item.number = entry.number;
+              item.email = entry.email;
+              updated = true;
+              
+              
+
+              const detailPath = path.join(__dirname,'detay.json');
+              fs.readFile(detailPath, 'utf8', (err, detailFile) => {
+                if (err) {
+                    console.error('Error reading file:', err);
+                }
+                
+                let detailData;
+                try {
+                    detailData = JSON.parse(detailFile);
+                } catch (parseError) {
+                    console.error('Error parsing JSON:', parseError);
+                }
+          
+                
+                
+                detailData.forEach(item => {
+                        item.name = entry.name;
+                        item.surname = entry.surname;
+                        item.email = entry.email;
+                        item.area = entry.area;
+                        item.number = entry.number;
+                        item.office = entry.office;
+                });
+
+          
+                // Convert the data back to JSON
+                const updatedData = JSON.stringify(detailData, null, 2); // Indent with 2 spaces
+          
+                // Write the updated JSON back to the file
+                fs.writeFile("detay.json", updatedData, 'utf8', (writeError) => {
+                    if (writeError) {
+                        console.error('Error writing file:', writeError);
+                    }
+                });
+
+            });
+            res.redirect("/anasayfa");
+          }
+          
+          
+      });
+
+      if (!updated) {
+          return res.status(404).send('Item with the specified id not found');
+      }
+
+      // Convert the data back to JSON
+      const updatedData = JSON.stringify(jsonData, null, 2); // Indent with 2 spaces
+
+      // Write the updated JSON back to the file
+      fs.writeFile("kisiler.json", updatedData, 'utf8', (writeError) => {
+          if (writeError) {
+              console.error('Error writing file:', writeError);
+              return res.status(500).send('Error writing file');
+          }
+      });
+  });
+
+  
+
+});
+
+
+
+
 
 let port = 8000;
-let ip = "127.0.0.1";
+let ip = "0.0.0.0";
 
 let server = uygulama.listen(port,ip, () => {
     console.log("Server is running on:",ip, port);
