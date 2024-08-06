@@ -55,6 +55,7 @@ uygulama.get('/detail-data', (req, res) => {
 
         try {
             res.json(JSON.parse(data));
+            detailsdata();
         } catch (parseError) {
             console.error('Error parsing JSON:', parseError);
             return res.status(500).send('Error parsing JSON');
@@ -282,6 +283,7 @@ function detailsdata()
                         jsonData = JSON.parse(detailFile);
                     } catch (parseError) {
                         console.error('Error parsing JSON:', parseError);
+                        return 0;
                     }
               
                     
@@ -426,7 +428,7 @@ uygulama.post('/change-data', (req, res) => {
 
 
 let port = 8000;
-let ip = "0.0.0.0";
+let ip = "127.0.0.1";
 
 let server = uygulama.listen(port,ip, () => {
     console.log("Server is running on:",ip, port);

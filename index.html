@@ -12,9 +12,11 @@
             <td id="header2"><p>Detayları Görmek için Sürükle↓</p></td>
             <td id="header3"><p>Detaylar</p></td>
         </tr>
+    <div id="boxes">
         <th id="box1" ondrop="drop(event)" ondragover="dropAble(event)"></th>
         <th id="box2" ondrop="drop(event)" ondragover="dropAble(event)"></th>
         <th id="box3" ondrop="drop(event)" ondragover="dropAble(event)"></th>
+    </div>
     </table>
 
     <form action="/addCard" method="POST" class="addForm">
@@ -45,6 +47,7 @@
     <script>
         checkFilled();
         detailsFunction();
+        data();
         function deleteItem(ev)
         {
             ev.preventDefault();
@@ -62,7 +65,7 @@
                     body: JSON.stringify({ data: data })
                 });
                 const result = await response.text();
-                console.log('Success:', result);
+                //console.log('Success:', result);
                 location.reload();
             } catch (error) {
                 console.error('Error:', error);
@@ -86,7 +89,7 @@
             let box2 = document.getElementById("box2");
             if(targetbox.id == "delete")
             {
-                console.log("dropped");
+                //console.log("dropped");
                 deleteData(data);
                 if(!box2.hasChildNodes())
                 {
@@ -103,13 +106,44 @@
                 }
             }
             
-            else if(targetbox.id === "box2" && filledOut)
+            else if(targetbox.id === "box2")
             {
+                if(box2.hasChildNodes())
+                {
+                    var child = box2.firstChild.id;
+                    console.log(box2.hasChildNodes());// aynı idye sahip jsonu bulup bolumid 1 yap
+                    targetbox.appendChild(document.getElementById(data));
+                    
+                    postData(1,child);
+                    
+                    detailsFunction();
+                    /*data();
+                    $( "#boxes" ).load(window.location.href + " #box2" );*/
+                    location.reload();
+                    if(box2.hasChildNodes())
+                    {
+                        postData(1,child.id);
+                    
+                        detailsFunction();
+                        /*data();
+                    $( "#boxes" ).load(window.location.href + " #box2" );*/
+                    location.reload();
+                    }
+                    postData(2, data);
+                    
+                    detailsFunction();
+                    /*data();
+                    $( "#boxes" ).load(window.location.href + " #box2" );*/
+                    location.reload();
+                }
+                else if(!box2.hasChildNodes()){
                 targetbox.appendChild(document.getElementById(data));
                 postData(2, data);
+                
                 changeFilled();
-                console.log("moved to box2");
                 detailsFunction();
+                
+                }
             }
             
             
@@ -122,7 +156,6 @@
                 .then(response => response.json())
                 .then(data => {
                     const filled = data.filled;
-                    console.log(filled); // true or false
                     filledOut = !filled;
                     detailsFunction();
                 })
@@ -135,7 +168,7 @@
             fetch('/change-filled')
                 .then(response => response.text())
                 .then(message => {
-                    console.log(message); // Log the server response
+                    //console.log(message); // Log the server response
                     checkFilled();
                 })
                 .catch(error => {
@@ -153,11 +186,14 @@
                     body: JSON.stringify({ bolumid: bolumid, data: data })
                 });
                 const result = await response.text();
-                console.log('Success:', result);
+                //console.log('Success:', result);
             } catch (error) {
                 console.error('Error:', error);
             }
         }
+        function data()
+        {
+
         
         fetch('/data')
             .then(response => response.json())
@@ -195,7 +231,7 @@
             })
             .catch(error => console.error('Error:', error));
 
-            
+        }    
 
 
         function detailsFunction () {
