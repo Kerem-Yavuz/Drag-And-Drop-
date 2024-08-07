@@ -46,13 +46,15 @@ uygulama.get('/data', (req, res) => {
 });
 
 uygulama.get('/detail-data', (req, res) => {
+    
+    
     fs.readFile('detay.json', 'utf8', (err, data) => {
         if (err) {
             res.status(500).send('Error reading the data file.');
             return;
         }
         
-
+        
         try {
             res.json(JSON.parse(data));
             detailsdata();
@@ -99,7 +101,7 @@ uygulama.post('/change-box', (req, res) => {
 
       // Convert the data back to JSON
       const updatedData = JSON.stringify(jsonData, null, 2); // Indent with 2 spaces
-
+      detailsdata();
       // Write the updated JSON back to the file
       fs.writeFile("kisiler.json", updatedData, 'utf8', (writeError) => {
           if (writeError) {
@@ -204,43 +206,6 @@ uygulama.post('/delete-data', (req, res) => {
 
 
 
-
-
-uygulama.get('/check-filled', (req, res) => {
-    const filePath = path.join(__dirname, 'detay.json');
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).send('Error reading JSON file');
-        }
-        const jsonData = JSON.parse(data);
-        // Assuming you want to check the `filled` value of the first object in the array
-        const filled = jsonData.length > 0 ? jsonData[0].filled : false;
-        res.json({ filled });
-    });
-});
-
-uygulama.get('/change-filled', (req, res) => {
-    const detayPath = path.join(__dirname, 'detay.json');
-    
-    fs.readFile(detayPath, 'utf8', (err, detay) => {
-        if (err){
-            return res.status(500).send('Error reading JSON file');
-        }
-
-        const detayData = JSON.parse(detay);
-        
-        // Toggle the filled value
-        detayData[0].filled = !detayData[0].filled;
-        detailsdata();
-        // Write the updated data back to the file
-        fs.writeFile(detayPath, JSON.stringify(detayData, null, 2), 'utf8', (err) => {
-            if (err) {
-                return res.status(500).send('Error writing JSON file');
-            }
-            res.send('Filled value updated');
-        });
-    });
-});
 
 
 function detailsdata()
@@ -428,7 +393,7 @@ uygulama.post('/change-data', (req, res) => {
 
 
 let port = 8000;
-let ip = "127.0.0.1";
+let ip = "0.0.0.0";
 
 let server = uygulama.listen(port,ip, () => {
     console.log("Server is running on:",ip, port);

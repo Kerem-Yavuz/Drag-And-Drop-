@@ -45,9 +45,10 @@
     
 
     <script>
+        let filled;
         checkFilled();
         detailsFunction();
-        data();
+        dataCheck();
         function deleteItem(ev)
         {
             ev.preventDefault();
@@ -91,56 +92,48 @@
             {
                 //console.log("dropped");
                 deleteData(data);
-                if(!box2.hasChildNodes())
-                {
-                    changeFilled();
-                }
+                checkFilled();
+                detailsFunction();
             }
             else if(targetbox.id == "box1")
             {
                 targetbox.appendChild(document.getElementById(data));
                 postData(1, data);
-                if(!box2.hasChildNodes())
-                {
-                    changeFilled();
-                }
+                checkFilled();
+                detailsFunction();
             }
             
             else if(targetbox.id === "box2")
             {
-                if(box2.hasChildNodes())
+                if(filled)
                 {
-                    var child = box2.firstChild.id;
-                    console.log(box2.hasChildNodes());// aynı idye sahip jsonu bulup bolumid 1 yap
+                    let child = box2.firstElementChild.id;
+                    console.log(child);
+                    console.log(data);
+                
+                    postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);postData(1,child);
+                      
+                    detailsFunction();
+                    checkFilled();
+                    
+                    
+                    
+                    document.getElementById("box1").appendChild(document.getElementById(child));
+                    //checkFilled();
+                    
+                    
                     targetbox.appendChild(document.getElementById(data));
-                    
-                    postData(1,child);
-                    
+                    postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);postData(2, data);
+                    checkFilled();
                     detailsFunction();
-                    /*data();
-                    $( "#boxes" ).load(window.location.href + " #box2" );*/
-                    location.reload();
-                    if(box2.hasChildNodes())
-                    {
-                        postData(1,child.id);
+                   
                     
-                        detailsFunction();
-                        /*data();
-                    $( "#boxes" ).load(window.location.href + " #box2" );*/
-                    location.reload();
-                    }
-                    postData(2, data);
-                    
-                    detailsFunction();
-                    /*data();
-                    $( "#boxes" ).load(window.location.href + " #box2" );*/
-                    location.reload();
                 }
-                else if(!box2.hasChildNodes()){
+                else{
+                
                 targetbox.appendChild(document.getElementById(data));
                 postData(2, data);
-                
-                changeFilled();
+                checkFilled();
                 detailsFunction();
                 
                 }
@@ -150,31 +143,18 @@
             
         }
 
-        let filledOut = true;
+        
         function checkFilled() {
-            fetch('/check-filled')
-                .then(response => response.json())
-                .then(data => {
-                    const filled = data.filled;
-                    filledOut = !filled;
-                    detailsFunction();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            if(box2.hasChildNodes())
+            {
+                filled = true;
+            }
+            else{
+                filled = false;
+            }
+            
         }
 
-        function changeFilled() {
-            fetch('/change-filled')
-                .then(response => response.text())
-                .then(message => {
-                    //console.log(message); // Log the server response
-                    checkFilled();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
 
         async function postData(bolumid, data) {
             try {
@@ -190,8 +170,9 @@
             } catch (error) {
                 console.error('Error:', error);
             }
+            detailsFunction();
         }
-        function data()
+        function dataCheck()
         {
 
         
@@ -228,6 +209,8 @@
                             break;
                     }
                 });
+                checkFilled();
+                detailsFunction();
             })
             .catch(error => console.error('Error:', error));
 
@@ -240,7 +223,7 @@
             .then(data => {
                 
                 data.forEach((person, index) => {
-                if(person.filled)
+                if(filled)
                     {
                     const card = document.createElement('form');
                     card.className = "details";
@@ -271,7 +254,7 @@
 
                     box.appendChild(card);
                     } 
-                else if(!person.filled)
+                else
                 {
                     document.getElementById("box3").innerHTML = '';
                 }      

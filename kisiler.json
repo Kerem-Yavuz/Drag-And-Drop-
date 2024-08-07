@@ -1,19 +1,19 @@
 [
   {
-    "name": "Kerem",
-    "surname": "Yavuz",
-    "email": "kerem.yavuz077@gmail.com",
+    "name": "Selim Can",
+    "surname": "Aydın",
+    "email": "selimcanaydin00@gmail.com",
     "bolumid": 1,
     "area": "Yazilim",
     "id": "drag1",
-    "number": "01231",
+    "number": "030723033",
     "office": "egc1"
   },
   {
     "name": "Jon",
     "surname": "Doe",
     "email": "test@example.us",
-    "bolumid": 2,
+    "bolumid": 1,
     "area": "Yazilim2",
     "id": "drag2",
     "number": "31234121",
@@ -43,7 +43,7 @@
     "name": "Gottfried",
     "surname": "Leibniz",
     "email": "test@beispiel.de",
-    "bolumid": 1,
+    "bolumid": 2,
     "area": "Yazilim5",
     "id": "drag5",
     "number": "31123",
